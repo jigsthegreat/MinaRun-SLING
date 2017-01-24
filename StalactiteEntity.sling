@@ -1,0 +1,54 @@
+class is SpriteEntity imports cape imports cave imports motion #stalactiteEntity:
+
+var stalactite as TextureSprite
+var width as double
+var height as double
+var gameScene as GameScene
+
+func createSprite override as Sprite
+{
+	width = layer.getReferenceWidth()
+	height = layer.getReferenceHeight()
+	gameScene = scene as GameScene
+	// var rand = new Random()
+	// var fileName = String.append("rock", rand.nextInt(4))
+	stalactite = gameScene.addTextureSpriteForSize(gameScene.createTextureForImageResource("stalactite"), 0.05 * width, 0.06 * width)
+	var random = new Random()
+	stalactite.move(width * random.nextDouble(), height * 0.17)
+	return stalactite
+}
+
+func tick(gameTime as TimeValue, delta as double) override
+{
+	base.tick(gameTime, delta)
+	move(getX(), getY() + delta / 10)
+	foreach(spr in gameScene.getHammerEntities()) {
+		if(spr != null) {
+			if(sprite != null) {
+				if(getX() < spr.getX() + spr.getWidth() && getX() + getWidth() > spr.getX() && getY() < spr.getY() + spr.getHeight() && getY() + getHeight() > spr.getY()) {
+					PRINT("YUN OHwa!!")
+					// gameScene.removeHammerEntity(spr)
+					gameScene.removeStalactiteEntity(this)
+				}
+			}
+		}
+	}
+	if(getX() < gameScene.getManEntity().getX() + gameScene.getManEntity().getWidth() && getX() + getWidth() > gameScene.getManEntity().getX() && getY() < gameScene.getManEntity().getY() + gameScene.getManEntity().getHeight() && getY() + getHeight() > gameScene.getManEntity().getY()) {
+		gameScene.removeStalactiteEntity(this)
+		gameScene.setLifeCount(-1)
+		if(gameScene.getLifeCount() == 2) {
+			gameScene.getLifeEntity().getLife3().setTextureWithSize(gameScene.createTextureForImageResource("lifewhite"), 0.05 * width, 0.05 * width)
+		}
+		else {
+			gameScene.getLifeEntity().getLife2().setTextureWithSize(gameScene.createTextureForImageResource("lifewhite"), 0.05 * width, 0.05 * width)
+		}
+	}
+	if(getY() > height * 0.7) {
+		gameScene.removeStalactiteEntity(this)
+	}
+}
+
+func cleanup override
+{
+	layer.removeSprite(stalactite)
+}

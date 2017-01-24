@@ -1,0 +1,55 @@
+class is SpriteEntity imports cape imports cave imports motion #rockEntity:
+
+var rock as TextureSprite
+var width as double
+var height as double
+var gameScene as GameScene
+prop speed as double
+
+func createSprite override as Sprite
+{
+	width = layer.getReferenceWidth()
+	height = layer.getReferenceHeight()
+	gameScene = scene as GameScene
+	var rand = new Random()
+	var fileName = String.append("rock", rand.nextInt(4))
+	rock = gameScene.addTextureSpriteForSize(gameScene.createTextureForImageResource(fileName), 0.05 * width, 0.06 * width)
+	rock.move(width, height * 0.68)
+	speed = 0.25
+	return rock
+}
+
+func tick(gameTime as TimeValue, delta as double) override
+{
+	base.tick(gameTime, delta)
+	move(getX() - delta * speed, getY())
+	foreach(spr in gameScene.getHammerEntities()) {
+		if(spr != null) {
+			if(sprite != null) {
+				if(getX() < spr.getX() + spr.getWidth() && getX() + getWidth() > spr.getX() && getY() < spr.getY() + spr.getHeight() && getY() + getHeight() > spr.getY()) {
+					PRINT("YUN OH!!")
+					// gameScene.removeHammerEntity(spr)
+					gameScene.removeRockEntity(this)
+				}
+			}
+		}
+	}
+	if(getX() < gameScene.getManEntity().getX() + gameScene.getManEntity().getWidth() && getX() + getWidth() > gameScene.getManEntity().getX() && getY() < gameScene.getManEntity().getY() + gameScene.getManEntity().getHeight() && getY() + getHeight() > gameScene.getManEntity().getY()) {
+		gameScene.removeRockEntity(this)
+		gameScene.setLifeCount(-1)
+		if(gameScene.getLifeCount() == 2) {
+			gameScene.getLifeEntity().getLife3().setTextureWithSize(gameScene.createTextureForImageResource("lifewhite"), 0.05 * width, 0.05 * width)
+		}
+		else {
+			gameScene.getLifeEntity().getLife2().setTextureWithSize(gameScene.createTextureForImageResource("lifewhite"), 0.05 * width, 0.05 * width)
+		}
+	}
+	if(getX() + getWidth() < 0) {
+		gameScene.removeRockEntity(this)
+	}
+}
+
+func cleanup override
+{
+	layer.removeSprite(rock)
+}

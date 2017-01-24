@@ -1,0 +1,238 @@
+class is SpriteSceneWithEntities imports cape imports cave imports motion #gameScene:
+
+var background as BackgroundEntity
+var height as double
+var width as double
+var time as int
+var hcount as int
+var lifeCount as int
+var manEntity as ManEntity
+var rockEntity as RockEntity
+var stalactiteEntity as StalactiteEntity
+var controlEntity as ControlEntity
+var lifeEntity as LifeEntity
+var rockEntities as vector<RockEntity>
+var hammerEntities as vector<HammerEntity>
+var stalactiteEntities as vector<StalactiteEntity>
+// var quitbutton as TextSprite
+// var ball as BallEntity
+// var monster as MonsterEntity
+// var audioManager as AudioManager
+// var stream as AudioStream
+var hammerCountText as TextProperties
+var hammerCountSprite as TextSprite
+var scoreText as TextProperties
+var scoreSprite as TextSprite
+var speed as double
+
+func initialize override
+{
+	base.initialize()
+	width = getReferenceWidth()
+	height = getReferenceHeight()
+	time = 0
+	hcount = 5
+	lifeCount = 3
+	speed = 0.25
+	// audioManager = AudioManager.forApplication(context)
+	// if(audioManager != null) {
+	// 	stream = audioManager.getStreamForResource("game")
+	// }
+	// var textProp = TextProperties.forText("QUIT")
+	// textProp.setTextColor(Color.white())
+	// textProp.setBackgroundColor(Color.black())
+	// textProp.setFontSizeRelative(0.075 * height)
+	// textProp.setFontFamily("Garamond")
+	rockEntities = new vector<RockEntity>
+	hammerEntities = new vector<HammerEntity>
+	stalactiteEntities = new vector<StalactiteEntity>
+	addEntity(background = new BackgroundEntity())
+	addEntity(manEntity = new ManEntity())
+	addEntity(stalactiteEntity = new StalactiteEntity())
+	addEntity(controlEntity = new ControlEntity())
+	addEntity(lifeEntity = new LifeEntity())
+	rockEntity = new RockEntity()
+	addEntity(rockEntity)
+	rockEntities += rockEntity
+	stalactiteEntities += stalactiteEntity
+	// quitbutton = addTextSprite(textProp)
+	// quitbutton.move(width - quitbutton.getWidth(), 0)
+	// addEntity(ball = new BallEntity())
+	// onTimeToPlayStream()
+	scoreText = TextProperties.forText("")
+	scoreText.setTextColor(Color.white())
+	scoreText.setFontSizeRelative(0.05 * height)
+	scoreText.setFontFamily("Arial")
+	scoreSprite = addTextSprite(scoreText)
+	scoreSprite.move(width * 0.8, height * 0.04)
+	hammerCountText = TextProperties.forText("")
+	hammerCountText.setTextColor(Color.white())
+	hammerCountText.setFontSizeRelative(0.04 * height)
+	hammerCountText.setFontFamily("Arial")
+	hammerCountSprite = addTextSprite(hammerCountText)
+	hammerCountSprite.move(width * 0.4, height * 0.9)
+}
+
+func removeRockEntity(e as RockEntity) as void
+{
+	removeEntity(e)
+	Vector.removeValue(rockEntities, e)
+}
+
+func removeHammerEntity(e as HammerEntity) as void
+{
+	removeEntity(e)
+	Vector.removeValue(hammerEntities, e)
+}
+
+func removeStalactiteEntity(e as StalactiteEntity) as void
+{
+	removeEntity(e)
+	Vector.removeValue(stalactiteEntities, e)
+}
+
+func getManEntity as ManEntity
+{
+	return manEntity
+}
+
+func getRockEntity as RockEntity
+{
+	return rockEntity
+}
+
+func getStalactiteEntity as StalactiteEntity
+{
+	return stalactiteEntity
+}
+
+func getControlEntity as ControlEntity
+{
+	return controlEntity
+}
+
+func getLifeEntity as LifeEntity
+{
+	return lifeEntity
+}
+
+func getRockEntities as vector<RockEntity>
+{
+	return rockEntities
+}
+
+func getHammerEntities as vector<HammerEntity>
+{
+	return hammerEntities
+}
+
+func getStalactiteEntities as vector<StalactiteEntity>
+{
+	return stalactiteEntities
+}
+
+func setLifeCount(n as int) as void
+{
+	lifeCount += n
+}
+
+func getLifeCount as int
+{
+	return lifeCount
+}
+// func onTimeToPlayStream
+// {
+// 	if(stream != null) {
+// 		stream.play()
+// 		stream.setLooping(true)
+// 	}
+// }
+
+// func getStream as AudioStream
+// {
+// 	return stream
+// }
+
+// func getContext as ApplicationContext
+// {
+// 	return context
+// }
+
+// func getBallEntity as SpriteEntity
+// {
+// 	return ball
+// }
+
+func cleanup override
+{
+	removeAllSprites()
+	// Vector.clear(monsterEntities)
+}
+
+func attack as void
+{
+	if(hcount > 0) {
+		var hammer = new HammerEntity()
+		addEntity(hammer)
+		hammerEntities += hammer
+		hcount--
+		// PRINT(hammerEntities)
+	}
+}
+
+func onPointerEvent(event as PointerEvent) override
+{
+	base.onPointerEvent(event)
+	if(event.isConsumed) {
+		return
+	}
+	// else if(event.action == PointerEvent.DOWN) {
+	// 	if(event.isInside(quitbutton.getX(), quitbutton.getY(), quitbutton.getWidth(), quitbutton.getHeight())) {
+	// 		backToMainScene()
+	// 	}
+	// }
+}
+
+// func backToMainScene
+// {
+// 	stream.stop()
+// 	popScene()
+// }
+
+func tick(gameTime as TimeValue, delta as double) override
+{
+	base.tick(gameTime, delta)
+	time++
+	if ((time % 200) == 0) {
+		speed += 0.02
+		var rock = new RockEntity()
+		addEntity(rock)
+		rockEntities += rock
+		var stalactite = new StalactiteEntity()
+		addEntity(stalactite)
+		stalactiteEntities += stalactite
+		background.setSpeed(speed)
+		rock.setSpeed(speed)
+	}
+	if((time % 250) == 0) {
+		var rock = new RockEntity()
+		addEntity(rock)
+		rockEntities += rock
+	}
+	if(hcount < 5) {
+		if((time % 120) == 0) {
+			hcount++
+		}
+	}
+	// if((time % 100) == 0) {
+	// 	var hammer = new HammerEntity()
+	// 	addEntity(hammer)
+	// 	hammerEntities += hammer
+	// }
+	scoreSprite.setText(scoreText.setText(String.append("Score: ", time)))
+	hammerCountSprite.setText(hammerCountText.setText(String.append(": ", hcount)))
+	if(lifeCount == 0) {
+		PRINT("GAME OVER POH!")
+		pushScene(new GameoverScene())
+	}
+}

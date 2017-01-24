@@ -1,0 +1,15 @@
+class is SpriteSceneWithEntities imports cape imports cave imports motion #highscoreScene:
+
+depend "androidPermission:android.permission.WRITE_EXTERNAL_STORAGE"
+depend "androidPermission:android.permission.READ_EXTERNAL_STORAGE"
+
+func initialize override
+{
+	var output = FileInstance.forPath("/sdcard/data/mygame.txt")
+	if(output != null) {
+		//WRITE
+		output.setContentsString("aaa", "UTF-8")
+		//READ
+		PRINT(output.getContentsString("UTF-8"))
+	}
+}

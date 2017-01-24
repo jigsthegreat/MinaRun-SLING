@@ -1,0 +1,56 @@
+class is SpriteEntity imports cape imports cave imports motion #lifeEntity:
+
+var width as double
+var height as double
+var gameScene as GameScene
+var life1 as TextureSprite
+var life2 as TextureSprite
+var life3 as TextureSprite
+var lives as TextureSprite
+var life as int
+var isAdded as boolean
+var isSubtracted as boolean
+
+func createSprite override as Sprite
+{
+	width = layer.getReferenceWidth()
+	height = layer.getReferenceHeight()
+	gameScene = scene as GameScene
+	life1 = gameScene.addTextureSpriteForSize(gameScene.createTextureForImageResource("life"), 0.05 * width, 0.05 * width)
+	life1.move(width * 0.02, height * 0.07)
+	life2 = gameScene.addTextureSpriteForSize(gameScene.createTextureForImageResource("life"), 0.05 * width, 0.05 * width)
+	life2.move(width * 0.08, height * 0.07)
+	life3 = gameScene.addTextureSpriteForSize(gameScene.createTextureForImageResource("life"), 0.05 * width, 0.05 * width)
+	life3.move(width * 0.14, height * 0.07)
+	life = gameScene.getLifeCount()
+	isAdded = false
+	isSubtracted = false
+	return lives
+}
+
+func getLife1 as TextureSprite
+{
+	return life1
+}
+
+func getLife2 as TextureSprite
+{
+	return life2
+}
+
+func getLife3 as TextureSprite
+{
+	return life3
+}
+
+// func tick(gameTime as TimeValue, delta as double) override
+// {
+// 	base.tick(gameTime, delta)
+// }
+
+func cleanup override
+{
+	layer.removeSprite(life1)
+	layer.removeSprite(life2)
+	layer.removeSprite(life3)
+}

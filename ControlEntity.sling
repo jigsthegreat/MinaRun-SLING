@@ -1,0 +1,68 @@
+class is SpriteEntity is PointerListener imports cape imports cave imports motion #controlEntity:
+
+var attackButton as TextureSprite
+var jumpButton as TextureSprite
+var leftButton as TextureSprite
+var rightButton as TextureSprite
+var attack as TextureSprite
+var controls as TextureSprite
+var width as double
+var height as double
+var gameScene as GameScene
+
+func createSprite override as Sprite
+{
+	width = layer.getReferenceWidth()
+	height = layer.getReferenceHeight()
+	gameScene = scene as GameScene
+	attackButton = gameScene.addTextureSpriteForSize(gameScene.createTextureForImageResource("hammer"), 0.1 * width, 0.1 * width)
+	attackButton.move(width * 0.85, height * 0.8)
+	jumpButton = gameScene.addTextureSpriteForSize(gameScene.createTextureForImageResource("jump"), 0.1 * width, 0.1 * width)
+	jumpButton.move(width * 0.7, height * 0.8)
+	leftButton = gameScene.addTextureSpriteForSize(gameScene.createTextureForImageResource("left"), 0.1 * width, 0.1 * width)
+	leftButton.move(width * 0.03, height * 0.8)
+	rightButton = gameScene.addTextureSpriteForSize(gameScene.createTextureForImageResource("right"), 0.1 * width, 0.1 * width)
+	rightButton.move(width * 0.15, height * 0.8)
+	attack = gameScene.addTextureSpriteForSize(gameScene.createTextureForImageResource("hammer"), 0.05 * width, 0.05 * width)
+	attack.move(width * 0.35, height * 0.9)
+	return controls
+}
+
+func getAttackButton as TextureSprite
+{
+	return attackButton
+}
+
+func getLeftButton as TextureSprite
+{
+	return leftButton
+}
+
+func getRightButton as TextureSprite
+{
+	return rightButton
+}
+
+func getJumpButton as TextureSprite
+{
+	return jumpButton
+}
+
+func onPointerEvent(event as PointerEvent) as bool
+{
+	if(event.action == PointerEvent.DOWN) {
+		// isClicked = true
+	}
+	else if(event.action == PointerEvent.UP) {
+		// isClicked = false
+	}
+	return false
+}
+
+func cleanup override
+{
+	layer.removeSprite(attackButton)
+	layer.removeSprite(leftButton)
+	layer.removeSprite(rightButton)
+	layer.removeSprite(attack)
+}
