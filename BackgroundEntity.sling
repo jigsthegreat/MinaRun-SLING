@@ -24,7 +24,9 @@ func tick(gameTime as TimeValue, delta as double) override
 		x = 0
 	}
 	sprite.move(x, 0.0)
-	background.move(width + x, 0.0)
+	if(this != null) {
+		background.move(width + x, 0.0)
+	}
 }
 
 func cleanup override

@@ -1,0 +1,65 @@
+class is SpriteSceneWithEntities imports cape imports cave imports motion #helpScene:
+
+var backgroundhelp as TextureSprite
+var height as double
+var width as double
+var backbutton as TextureSprite
+var audioManager as AudioManager
+var stream as AudioStream
+
+func initialize override
+{
+	base.initialize()
+	height = getReferenceHeight()
+	width = getReferenceWidth()
+	audioManager = AudioManager.forApplication(context)
+	if(audioManager != null) {
+		stream = audioManager.getStreamForResource("soundhelp")
+	}
+	backgroundhelp = addTextureSpriteForSize(createTextureForImageResource("helpbackground"), width, height)
+	backbutton = addTextureSpriteForSize(createTextureForImageResource("back"), 0.1 * width, 0.1 * width)
+	backbutton.move(0.0, 0.0)
+	onTimeToPlayStream()
+}
+
+// func onTimeToPlaySoundClip
+// {
+// 	if(clip != null) {
+// 		clip.play()
+// 	}
+// }
+
+func onTimeToPlayStream
+{
+	if(stream != null) {
+		stream.play()
+		stream.setLooping(true)
+	}
+}
+
+func cleanup override
+{
+	//base.cleanup()
+	removeSprite(backbutton)
+	removeSprite(backgroundhelp)
+	// removeSprite(text)
+}
+
+func switchToMainScene
+{
+	stream.stop()
+	pushScene(new MainScene())
+}
+
+func onPointerEvent(event as PointerEvent) override
+{
+	base.onPointerEvent(event)
+	if(event.isConsumed) {
+		return
+	}
+	if(event.action == PointerEvent.DOWN) {
+		if(event.isInside(backbutton.getX(), backbutton.getY(), backbutton.getWidth(), backbutton.getHeight())) {
+			switchToMainScene()
+		}
+	}
+}

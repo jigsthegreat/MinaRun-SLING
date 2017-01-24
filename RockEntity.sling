@@ -11,15 +11,11 @@ func createSprite override as Sprite
 	width = layer.getReferenceWidth()
 	height = layer.getReferenceHeight()
 	gameScene = scene as GameScene
-	var rand = new Random()
-	var fileName = String.append("rock", rand.nextInt(4))
-	rock = gameScene.addTextureSpriteForSize(gameScene.createTextureForImageResource(fileName), 0.05 * width, 0.06 * width)
-	var max = height * 0.68
-	var min = height * 0.38
-	var ry = min + (max - min) * rand.nextDouble()
-	// rock.move(width, height * 0.68)
-	rock.move(width, ry)
+	// var rand = new Random()
+	// var fileName = String.append("rock", rand.nextInt(3))
+	rock = gameScene.addTextureSpriteForSize(gameScene.createTextureForImageResource("rock1"), 0.05 * width, 0.06 * width)
 	speed = 0.25
+	rock.move(width, height * 0.68)
 	return rock
 }
 

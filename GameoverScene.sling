@@ -1,31 +1,68 @@
 class is SpriteSceneWithEntities imports cape imports cave imports motion #gameoverScene:
 
 var gameover as TextureSprite
+var background as TextureSprite
 var height as double
 var width as double
-// var tbe as TextButtonEntity
+var restart as TextureSprite
+var mainMenu as TextureSprite
+var score as int
+var scoreText as TextProperties
+var scoreSprite as TextSprite
+
+ctor(s as int)
+{
+	score = s
+}
 
 func initialize override
 {
 	base.initialize()
 	height = getReferenceHeight()
 	width = getReferenceWidth()
-	var tbe = TextButtonEntity.forText("Back to Main Menu")
-	tbe.setBackgroundColor(Color.forRGBA(128, 128, 128, 128))
-	tbe.resize(width, height * 0.1)
-	addEntity(tbe)
-	tbe.move(0.0, 0.0)
-	tbe.setClickHandler(func {
-		switchToMainScene()
-	})
+	background = addTextureSpriteForSize(createTextureForImageResource("background"), width, height)
+	scoreText = TextProperties.forText(String.append("FINAL SCORE: ", score))
+	scoreText.setTextColor(Color.white())
+	scoreText.setFontSizeRelative(0.06 * height)
+	scoreText.setFontFamily("Arial")
+	scoreSprite = addTextSprite(scoreText)
+	scoreSprite.move(width * 0.3, height * 0.04)
 	gameover = addTextureSpriteForSize(createTextureForImageResource("gameover"), 0.3 * width, 0.3 * height)
-	gameover.move(0.5 * width - gameover.getWidth() * 0.5, 0.5 * height - gameover.getHeight() * 0.5)
+	gameover.move(0.5 * width - gameover.getWidth() * 0.5, 0.5 * height - gameover.getHeight())
+	mainMenu = addTextureSpriteForSize(createTextureForImageResource("mainmenu"), 0.1 * width, 0.1 * width)
+	mainMenu.move(0.5 * width + mainMenu.getWidth(), 0.8 * height)
+	restart = addTextureSpriteForSize(createTextureForImageResource("restart"), 0.1 * width, 0.1 * width)
+	restart.move(0.5 * width - mainMenu.getWidth() * 2, 0.8 * height)
 }
+
 func cleanup override
 {
 	//base.cleanup()
 	removeSprite(gameover)
-	// removeEntity(tbe)
+	removeSprite(restart)
+	removeSprite(mainMenu)
+}
+
+func onPointerEvent(event as PointerEvent) override
+{
+	base.onPointerEvent(event)
+	if(event.action == PointerEvent.DOWN) {
+		if(event.isInside(restart.getX(), restart.getY(), restart.getWidth(), restart.getHeight())) {
+			switchToGameScene()
+		}
+		if(event.isInside(mainMenu.getX(), mainMenu.getY(), mainMenu.getWidth(), mainMenu.getHeight())) {
+			switchToMainScene()
+		}
+	}
+	// if(event.action == PointerEvent.UP) {
+	// 	isLeft = false
+	// 	isRight = false
+	// }
+}
+
+func switchToGameScene
+{
+	pushScene(new GameScene())
 }
 
 func switchToMainScene

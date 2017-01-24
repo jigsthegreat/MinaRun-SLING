@@ -36,13 +36,13 @@ func tick(gameTime as TimeValue, delta as double) override
 		gameScene.removeHealthEntity(this)
 		PRINT("TOUCH!!!!!!!!!!")
 		if(gameScene.getLifeCount() < 3) {
-			gameScene.setLifeCount(1)
 			if(gameScene.getLifeCount() == 1) {
 				gameScene.getLifeEntity().getLife2().setTextureWithSize(gameScene.createTextureForImageResource("life"), 0.05 * width, 0.05 * width)
 			}
 			else {
 				gameScene.getLifeEntity().getLife3().setTextureWithSize(gameScene.createTextureForImageResource("life"), 0.05 * width, 0.05 * width)
 			}
+			gameScene.setLifeCount(1)
 		}
 	}
 	if(getX() + getWidth() < 0) {
