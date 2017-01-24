@@ -21,12 +21,10 @@ func createSprite override as Sprite
 func tick(gameTime as TimeValue, delta as double) override
 {
 	base.tick(gameTime, delta)
-	move(getX(), getY() + delta / 10)
 	foreach(spr in gameScene.getHammerEntities()) {
 		if(spr != null) {
 			if(sprite != null) {
 				if(getX() < spr.getX() + spr.getWidth() && getX() + getWidth() > spr.getX() && getY() < spr.getY() + spr.getHeight() && getY() + getHeight() > spr.getY()) {
-					PRINT("YUN OHwa!!")
 					// gameScene.removeHammerEntity(spr)
 					gameScene.removeStalactiteEntity(this)
 				}
@@ -45,6 +43,9 @@ func tick(gameTime as TimeValue, delta as double) override
 	}
 	if(getY() > height * 0.7) {
 		gameScene.removeStalactiteEntity(this)
+	}
+	if(this != null) {
+		move(getX(), getY() + delta / 10)
 	}
 }
 

@@ -14,6 +14,7 @@ var lifeEntity as LifeEntity
 var rockEntities as vector<RockEntity>
 var hammerEntities as vector<HammerEntity>
 var stalactiteEntities as vector<StalactiteEntity>
+var healthEntities as vector<HealthEntity>
 // var quitbutton as TextSprite
 // var ball as BallEntity
 // var monster as MonsterEntity
@@ -45,6 +46,7 @@ func initialize override
 	// textProp.setFontFamily("Garamond")
 	rockEntities = new vector<RockEntity>
 	hammerEntities = new vector<HammerEntity>
+	healthEntities = new vector<HealthEntity>
 	stalactiteEntities = new vector<StalactiteEntity>
 	addEntity(background = new BackgroundEntity())
 	addEntity(manEntity = new ManEntity())
@@ -83,6 +85,12 @@ func removeHammerEntity(e as HammerEntity) as void
 {
 	removeEntity(e)
 	Vector.removeValue(hammerEntities, e)
+}
+
+func removeHealthEntity(e as HealthEntity) as void
+{
+	removeEntity(e)
+	Vector.removeValue(healthEntities, e)
 }
 
 func removeStalactiteEntity(e as StalactiteEntity) as void
@@ -124,6 +132,11 @@ func getRockEntities as vector<RockEntity>
 func getHammerEntities as vector<HammerEntity>
 {
 	return hammerEntities
+}
+
+func getHealthEntities as vector<HealthEntity>
+{
+	return healthEntities
 }
 
 func getStalactiteEntities as vector<StalactiteEntity>
@@ -218,6 +231,19 @@ func tick(gameTime as TimeValue, delta as double) override
 		var rock = new RockEntity()
 		addEntity(rock)
 		rockEntities += rock
+		rock.setSpeed(speed)
+	}
+	if((time % 1000) == 0) {
+		PRINT("life po")
+		var health = new HealthEntity()
+		addEntity(health)
+		healthEntities += health
+	}
+	if(speed > 0.4 && (time % 200) == 0) {
+		PRINT("SPEEEEEED!")
+		var stalactite = new StalactiteEntity()
+		addEntity(stalactite)
+		stalactiteEntities += stalactite
 	}
 	if(hcount < 5) {
 		if((time % 120) == 0) {

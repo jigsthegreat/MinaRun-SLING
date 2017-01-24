@@ -1,0 +1,59 @@
+class is SpriteEntity imports cape imports cave imports motion #healthEntity:
+
+var health as TextureSprite
+var width as double
+var height as double
+var gameScene as GameScene
+prop speed as double
+
+func createSprite override as Sprite
+{
+	width = layer.getReferenceWidth()
+	height = layer.getReferenceHeight()
+	gameScene = scene as GameScene
+	// var rand = new Random()
+	// var fileName = String.append("life", rand.nextInt(4))
+	health = gameScene.addTextureSpriteForSize(gameScene.createTextureForImageResource("life"), 0.05 * width, 0.06 * width)
+	health.move(width, height * 0.68)
+	speed = 0.25
+	return health
+}
+
+func tick(gameTime as TimeValue, delta as double) override
+{
+	base.tick(gameTime, delta)
+	// foreach(spr in gameScene.getHammerEntities()) {
+	// 	if(spr != null) {
+	// 		if(sprite != null) {
+	// 			if(getX() < spr.getX() + spr.getWidth() && getX() + getWidth() > spr.getX() && getY() < spr.getY() + spr.getHeight() && getY() + getHeight() > spr.getY()) {
+	// 				// gameScene.removeHammerEntity(spr)
+	// 				gameScene.removeRockEntity(this)
+	// 			}
+	// 		}
+	// 	}
+	// }
+	if(getX() < gameScene.getManEntity().getX() + gameScene.getManEntity().getWidth() && getX() + getWidth() > gameScene.getManEntity().getX() && getY() < gameScene.getManEntity().getY() + gameScene.getManEntity().getHeight() && getY() + getHeight() > gameScene.getManEntity().getY()) {
+		gameScene.removeHealthEntity(this)
+		PRINT("TOUCH!!!!!!!!!!")
+		if(gameScene.getLifeCount() < 3) {
+			gameScene.setLifeCount(1)
+			if(gameScene.getLifeCount() == 1) {
+				gameScene.getLifeEntity().getLife2().setTextureWithSize(gameScene.createTextureForImageResource("life"), 0.05 * width, 0.05 * width)
+			}
+			else {
+				gameScene.getLifeEntity().getLife3().setTextureWithSize(gameScene.createTextureForImageResource("life"), 0.05 * width, 0.05 * width)
+			}
+		}
+	}
+	if(getX() + getWidth() < 0) {
+		gameScene.removeHealthEntity(this)
+	}
+	if(this != null) {
+		move(getX() - delta * speed, getY())
+	}
+}
+
+func cleanup override
+{
+	layer.removeSprite(health)
+}

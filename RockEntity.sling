@@ -14,7 +14,11 @@ func createSprite override as Sprite
 	var rand = new Random()
 	var fileName = String.append("rock", rand.nextInt(4))
 	rock = gameScene.addTextureSpriteForSize(gameScene.createTextureForImageResource(fileName), 0.05 * width, 0.06 * width)
-	rock.move(width, height * 0.68)
+	var max = height * 0.68
+	var min = height * 0.38
+	var ry = min + (max - min) * rand.nextDouble()
+	// rock.move(width, height * 0.68)
+	rock.move(width, ry)
 	speed = 0.25
 	return rock
 }
@@ -22,12 +26,10 @@ func createSprite override as Sprite
 func tick(gameTime as TimeValue, delta as double) override
 {
 	base.tick(gameTime, delta)
-	move(getX() - delta * speed, getY())
 	foreach(spr in gameScene.getHammerEntities()) {
 		if(spr != null) {
 			if(sprite != null) {
 				if(getX() < spr.getX() + spr.getWidth() && getX() + getWidth() > spr.getX() && getY() < spr.getY() + spr.getHeight() && getY() + getHeight() > spr.getY()) {
-					PRINT("YUN OH!!")
 					// gameScene.removeHammerEntity(spr)
 					gameScene.removeRockEntity(this)
 				}
@@ -46,6 +48,9 @@ func tick(gameTime as TimeValue, delta as double) override
 	}
 	if(getX() + getWidth() < 0) {
 		gameScene.removeRockEntity(this)
+	}
+	if(this != null) {
+		move(getX() - delta * speed, getY())
 	}
 }
 

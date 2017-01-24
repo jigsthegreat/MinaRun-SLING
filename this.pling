@@ -1,5 +1,5 @@
-title = "Mountain Invader"
-description = "Mountain Invader Game."
+title = "MinaRun"
+description = "MinaRun Game."
 copyright = "Copyright (c) Program"
 license = "All rights reserved"
 version = "1.0.x"
@@ -10,7 +10,8 @@ depends = [
 	"motion"
 ]
 resources = [
-	"images"
+	"images",
+	"audio"
 ]
 preFilters += "@motion"
 compilerOptions = {

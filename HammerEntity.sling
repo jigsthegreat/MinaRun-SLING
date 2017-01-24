@@ -21,41 +21,6 @@ func tick(gameTime as TimeValue, delta as double) override
 {
 	base.tick(gameTime, delta)
 	setRotation(getRotation() + delta * 15)
-	// foreach(spr in gameScene.getRockEntities()) {
-	// 	if(spr != null) {
-	// 		// foreach(s in gameScene.getHammerEntities()) {
-	// 			if(sprite != null) {
-	// 				// if(spr != null) {
-	// 				if(getX() < spr.getX() + spr.getWidth() && getX() + getWidth() > spr.getX() && getY() < spr.getY() + spr.getHeight() && getY() + getHeight() > spr.getY()) {
-	// 					PRINT("YUN OH!!")
-	// 					// gameScene.removeHammerEntity(this)
-	// 					gameScene.removeRockEntity(spr)
-	// 				}
-	// 				// }
-	// 			}
-	// 		// }
-	// 	}
-	// }
-	foreach(sprt in gameScene.getStalactiteEntities()) {
-		if(sprt != null) {
-			// foreach(s in gameScene.getHammerEntities()) {
-			if(sprite != null) {
-				if(getX() < sprt.getX() + sprt.getWidth() && getX() + getWidth() > sprt.getX() && getY() < sprt.getY() + sprt.getHeight() && getY() + getHeight() > sprt.getY()) {
-					PRINT("YUN OHwa!!")
-					// gameScene.removeHammerEntity(this)
-					gameScene.removeStalactiteEntity(sprt)
-				}
-			}
-			// }
-			// if(this != null) {
-			// 	if(getX() < spr.getX() + spr.getWidth() && getX() + getWidth() > spr.getX() && getY() < spr.getY() + spr.getHeight() && getY() + getHeight() > spr.getY()) {
-			// 		PRINT("YUN OHwa!!")
-			// 		gameScene.removeHammerEntity(this)
-			// 		gameScene.removeStalactiteEntity(spr)
-			// 	}
-			// }
-		}
-	}
 	if(this != null) {
 		move(getX() + delta / 3.5, getY())
 	}
